@@ -379,6 +379,8 @@ jenkins:
               command: "/busybox/cat"
               name: kaniko
               image: gcr.io/kaniko-project/executor:v1.23.2-debug
+              resourceRequestCpu: "1"
+              resourceRequestMemory: "256Mi"
               resourceLimitCpu: "3"
               resourceLimitMemory: "15000Mi"
               workingDir: /data/jenkins_worker
