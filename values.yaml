@@ -24,7 +24,7 @@ jenkins:
     release: 1
     runAsUser: 0
     jenkinsUrl: https://nlee.kalccoe.com/jenkins
-    # jenkinsUriPrefix: "/jenkins"
+    jenkinsUriPrefix: "/jenkins"
     jenkinsOpts: "--requestHeaderSize=258140"
     javaOpts: >
       -Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Seoul
