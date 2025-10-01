@@ -48,7 +48,7 @@ jenkins:
     JCasC:
       securityRealm: |-
         local:
-          allowSignup: false
+          allowsSignup: false
           enableCaptcha: false
           users:
           - id: "devops-admin"
