@@ -378,9 +378,7 @@ jenkins:
                   value: "http://jenkins.jenkins.svc.cluster.local:7080/jenkins"
               command: "/busybox/cat"
               name: kaniko
-              image: 277707137135.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-shr-ecr-jenkins-worker-kaniko:latest
-              resourceRequestCpu: "1"
-              resourceRequestMemory: "256Mi"
+              image: gcr.io/kaniko-project/executor:v1.23.2-debug
               resourceLimitCpu: "3"
               resourceLimitMemory: "15000Mi"
               workingDir: /data/jenkins_worker
