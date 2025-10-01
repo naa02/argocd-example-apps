@@ -51,9 +51,9 @@ jenkins:
           allowsSignup: false
           enableCaptcha: false
           users:
-          - id: "devops-admin"
+          - id: "admin"
             name: "Jenkins Admin"
-            password: "password"
+            password: "koreanair1!"
       #   oic:
       #     clientId: "${json:oicClientId:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
       #     clientSecret: "${json:oicClientSecret:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
