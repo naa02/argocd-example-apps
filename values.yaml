@@ -14,7 +14,7 @@ jenkins:
   controller:
     admin:
       username: "devops-admin"
-    image: 593793028939.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-shr-ecr-jenkins-main
+    image: 971422699372.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-all-ecr-jenkins-main
     tag: latest
     pullPolicy: "Always"
     #2025.08.29 PDB 옵션 추가
@@ -23,7 +23,7 @@ jenkins:
       maxUnavailable: 1
     release: 1
     runAsUser: 0
-    jenkinsUrl: https://bdp.koreanair.com/jenkins
+    jenkinsUrl: https://nlee.kalccoe.com/jenkins
     jenkinsUriPrefix: "/jenkins"
     jenkinsOpts: "--requestHeaderSize=258140"
     javaOpts: >
@@ -47,57 +47,60 @@ jenkins:
         memory: "7000Mi"
     JCasC:
       securityRealm: |-
-        oic:
-          clientId: "${json:oicClientId:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-          clientSecret: "${json:oicClientSecret:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-          emailFieldName: "email"
-          groupsFieldName: "groups"
-          userNameField: "name"
-          serverConfiguration:
-            wellKnown:
-              wellKnownOpenIDConfigurationUrl: "https://login.koreanair.com/.well-known/openid-configuration"
-          escapeHatchEnabled: true
-          escapeHatchUsername: "${json:username:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-          escapeHatchSecret: "${json:userpwd:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-          escapeHatchGroup: "BDP_Jenkins_Prd_Admin"
-          logoutFromOpenidProvider: true
-      authorizationStrategy: |-
-        roleBased:
-          roles:
-            global:
-              - name: "admin"
-                description: "BDP Jenkins 관리자"
-                permissions:
-                  - "Overall/Administer"
-                entries:
-                  - group: "BDP_Jenkins_Prd_Admin"
+        local:
+          allowSignup: false
+          enableCaptcha: false
+          users:
+          - id: "devops-admin"
+            name: "Jenkins Admin"
+            password: ""password""
+      #   oic:
+      #     clientId: "${json:oicClientId:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+      #     clientSecret: "${json:oicClientSecret:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+      #     emailFieldName: "email"
+      #     groupsFieldName: "groups"
+      #     userNameField: "name"
+      #     serverConfiguration:
+      #       wellKnown:
+      #         wellKnownOpenIDConfigurationUrl: "https://login.koreanair.com/.well-known/openid-configuration"
+      #     escapeHatchEnabled: true
+      #     escapeHatchUsername: "${json:username:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+      #     escapeHatchSecret: "${json:userpwd:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+      #     escapeHatchGroup: "BDP_Jenkins_Prd_Admin"
+      #     logoutFromOpenidProvider: true
+      # authorizationStrategy: |-
+      #   roleBased:
+      #     roles:
+      #       global:
+      #         - name: "admin"
+      #           description: "BDP Jenkins 관리자"
+      #           permissions:
+      #             - "Overall/Administer"
+      #           entries:
+      #             - group: "BDP_Jenkins_Prd_Admin"
 
-              - name: "user"
-                description: "BDP Jenkins 사용자"
-                permissions:
-                  - "Overall/Read"
-                entries:
-                  - group: "BDP_Jenkins_Prd_User"
-                  - group: "BDP_Jenkins_Prd_Wing"
+      #         - name: "user"
+      #           description: "BDP Jenkins 사용자"
+      #           permissions:
+      #             - "Overall/Read"
+      #           entries:
+      #             - group: "BDP_Jenkins_Prd_User"
+      #             - group: "BDP_Jenkins_Prd_Wing"
 
-            items:
-              - name: "wing-user"
-                pattern: "^WING(?:/WING.*)?"
-                permissions:
-                  - "Job/Read"
-                entries:
-                  - group: "BDP_Jenkins_Prd_Wing"
+      #       items:
+      #         - name: "wing-user"
+      #           pattern: "^WING(?:/WING.*)?"
+      #           permissions:
+      #             - "Job/Read"
+      #           entries:
+      #             - group: "BDP_Jenkins_Prd_Wing"
+      
       configScripts:
         general-settings: |
           jenkins:
             systemMessage: |
               <p style="color: #008080;">
-                🎉 <b>환영합니다! Welcome to Build Platform CI/CD worklfow.</b>
-              </p>
-              <p>
-                <a href="https://itro.koreanair.com/docs/display/PRJAICC/Bitbucket+Repositories" target="_blank">
-                  📌 <b>All Bitbucket Repositories</b>
-                </a>
+                🎉 <b>환영합니다! Welcome to SANDBOX CI/CD worklfow.</b>
               </p>
             globalNodeProperties:
             - envVars:
@@ -107,7 +110,7 @@ jenkins:
                 - key: "ARGO_GIT_URL"
                   value: "https://itro.koreanair.com/git/scm/awsbdpcicd/argo-template.git"
                 - key: "ARGO_URL"
-                  value: "bdp.koreanair.com:443/argocd"
+                  value: "nlee.kalccoe.com/argocd"
                 - key: "ARGO_WORKSPACE"
                   value: "/data/jenkins_worker/workspace/CONFIG/ARGO-TEMPLATE"
                 - key: "ACCOUNT_COMWingDEV"
@@ -148,52 +151,52 @@ jenkins:
             system:
               domainCredentials:
               - credentials:
-                - usernamePassword:
-                    id: "ifuser-bitbucket"
-                    password: "${json:userpwd:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-                    username: "${json:username:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-                    scope: GLOBAL
-                    usernameSecret: true
-                    description: "Bitbucket 인증 name password"
-                - usernamePassword:
-                    id: "ifuser-alm"
-                    password: "${json:userpwd:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-                    username: "${json:username:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-                    scope: GLOBAL
-                    usernameSecret: true
-                    description: "ALM함수 사용을 위한 credential-id 생성"
-                - string:
-                    id: "ifuser-argocd"
-                    secret: "${json:argocdToken:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-                    scope: GLOBAL
-                    description: "argocd 토큰"
-                - string:
-                    id: "ifuser-jira"
-                    secret: "${json:jiraToken:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-                    scope: GLOBAL
-                    description: "jira 토큰"
-                - usernamePassword:
-                    id: "ifuser-sonarqube-id"
-                    password: "${json:userpwd:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-                    username: "${json:username:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-                    scope: GLOBAL
-                    usernameSecret: true
-                    description: "ifuser SonarQube 인증 name password"
-                - string:
-                    id: "ifuser-sonarqube"
-                    secret: "${json:sonarqubeToken:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-                    scope: GLOBAL
-                    description: "sonarqube 토큰"
-                - string:
-                    id: "nexus-token"
-                    secret: "${json:nexusToken:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-                    scope: GLOBAL
-                    description: "nexus 토큰"
-                - string:
-                    id: "jcasc-token"
-                    secret: "${json:JcascTest:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
-                    scope: GLOBAL
-                    description: "JcascConfigReload 테스트용 토큰"
+                # - usernamePassword:
+                #     id: "ifuser-bitbucket"
+                #     password: "${json:userpwd:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+                #     username: "${json:username:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+                #     scope: GLOBAL
+                #     usernameSecret: true
+                #     description: "Bitbucket 인증 name password"
+                # - usernamePassword:
+                #     id: "ifuser-alm"
+                #     password: "${json:userpwd:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+                #     username: "${json:username:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+                #     scope: GLOBAL
+                #     usernameSecret: true
+                #     description: "ALM함수 사용을 위한 credential-id 생성"
+                # - string:
+                #     id: "ifuser-argocd"
+                #     secret: "${json:argocdToken:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+                #     scope: GLOBAL
+                #     description: "argocd 토큰"
+                # - string:
+                #     id: "ifuser-jira"
+                #     secret: "${json:jiraToken:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+                #     scope: GLOBAL
+                #     description: "jira 토큰"
+                # - usernamePassword:
+                #     id: "ifuser-sonarqube-id"
+                #     password: "${json:userpwd:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+                #     username: "${json:username:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+                #     scope: GLOBAL
+                #     usernameSecret: true
+                #     description: "ifuser SonarQube 인증 name password"
+                # - string:
+                #     id: "ifuser-sonarqube"
+                #     secret: "${json:sonarqubeToken:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+                #     scope: GLOBAL
+                #     description: "sonarqube 토큰"
+                # - string:
+                #     id: "nexus-token"
+                #     secret: "${json:nexusToken:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+                #     scope: GLOBAL
+                #     description: "nexus 토큰"
+                # - string:
+                #     id: "jcasc-token"
+                #     secret: "${json:JcascTest:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
+                #     scope: GLOBAL
+                #     description: "JcascConfigReload 테스트용 토큰"
         plugin-settings: |
           unclassified:
             sonarGlobalConfiguration:
@@ -265,7 +268,7 @@ jenkins:
     ingress:
       enabled: true
       ingressClassName: nginx
-      hostName: bdp.koreanair.com
+      hostName: nlee.kalccoe.com
       paths:
         - path: /jenkins
           pathType: Prefix
@@ -283,14 +286,14 @@ jenkins:
     create: true
   serviceAccount:
     annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::593793028939:role/com-shr-role-eks-jenkins-main
+      eks.amazonaws.com/role-arn: arn:aws:iam::971422699372:role/com-all-role-eks-nlee-jenkins-main
  
   serviceAccountAgent:
     create: true
     name: jenkins-worker
     annotations:
-      eks.amazonaws.com/role-arn: arn:aws:iam::593793028939:role/com-shr-role-eks-jenkins-worker
-   
+      eks.amazonaws.com/role-arn: arn:aws:iam::971422699372:role/com-all-role-eks-nlee-jenkins-worker
+      
   # awsSecurityGroupPolicies:
   #   enabled: true
   #   policies:
@@ -309,7 +312,7 @@ jenkins:
     namespace: jenkins
     podName: jenkins_worker
     customJenkinsLabels: jenkins_worker
-    image: 593793028939.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-shr-ecr-jenkins-worker
+    image: 277707137135.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-shr-ecr-jenkins-worker
     tag: latest
 
     # timeout설정을 2배로 설정
@@ -317,7 +320,7 @@ jenkins:
     kubernetesReadTimeout: 30
     containerCap: ""
     connectTimeout: 300
-    jenkinsUrl: https://bdp.koreanair.com/jenkins
+    jenkinsUrl: https://nlee.kalccoe.com/jenkins
     command:
     resources:
       requests:
@@ -360,9 +363,9 @@ jenkins:
             - envVars:
               - envVar:
                   key: "JENKINS_URL"
-                  value: "https://bdp.koreanair.com/jenkins"
+                  value: "https://nlee.kalccoe.com/jenkins"
               name: jnlp
-              image: 593793028939.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-shr-ecr-jenkins-worker:latest
+              image: 277707137135.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-shr-ecr-jenkins-worker:latest
               resourceRequestCpu: "2"
               resourceRequestMemory: "3840Mi"
               resourceLimitCpu: "2"
@@ -375,7 +378,7 @@ jenkins:
                   value: "http://jenkins.jenkins.svc.cluster.local:7080/jenkins"
               command: "/busybox/cat"
               name: kaniko
-              image: 593793028939.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-shr-ecr-jenkins-worker-kaniko:latest
+              image: 277707137135.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-shr-ecr-jenkins-worker-kaniko:latest
               resourceRequestCpu: "1"
               resourceRequestMemory: "256Mi"
               resourceLimitCpu: "3"
