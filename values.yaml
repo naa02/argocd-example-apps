@@ -24,7 +24,7 @@ jenkins:
     release: 1
     runAsUser: 0
     jenkinsUrl: https://nlee.kalccoe.com/jenkins
-    jenkinsUriPrefix: "/jenkins"
+    # jenkinsUriPrefix: "/jenkins"
     jenkinsOpts: "--requestHeaderSize=258140"
     javaOpts: >
       -Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Seoul
@@ -53,7 +53,7 @@ jenkins:
           users:
           - id: "devops-admin"
             name: "Jenkins Admin"
-            password: ""password""
+            password: "password"
       #   oic:
       #     clientId: "${json:oicClientId:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
       #     clientSecret: "${json:oicClientSecret:${arn:aws:secretsmanager:ap-northeast-2:593793028939:secret:bdp/shr/eks/jenkins/passwords-0WgrL6}}"
