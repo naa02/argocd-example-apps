@@ -312,7 +312,7 @@ jenkins:
     namespace: jenkins
     podName: jenkins_worker
     customJenkinsLabels: jenkins_worker
-    image: 277707137135.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-shr-ecr-jenkins-worker
+    image: 971422699372.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-all-ecr-jenkins-worker
     tag: latest
 
     # timeout설정을 2배로 설정
@@ -365,7 +365,7 @@ jenkins:
                   key: "JENKINS_URL"
                   value: "https://nlee.kalccoe.com/jenkins"
               name: jnlp
-              image: 277707137135.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-shr-ecr-jenkins-worker:latest
+              image: 971422699372.dkr.ecr.ap-northeast-2.amazonaws.com/jenkins/com-all-ecr-jenkins-worker:latest
               resourceRequestCpu: "2"
               resourceRequestMemory: "3840Mi"
               resourceLimitCpu: "2"
