@@ -100,7 +100,7 @@ jenkins:
           jenkins:
             systemMessage: |
               <p style="color: #008080;">
-                🎉 <b>환영합니다! Welcome to SANDBOX CI/CD worklfow.</b>
+                🎉 <b>나영의 젠킨스 입니다~~~! Welcome to SANDBOX CI/CD worklfow.</b>
               </p>
             globalNodeProperties:
             - envVars:
